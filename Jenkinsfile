@@ -6,14 +6,14 @@ pipeline {
     stages{
         stage('Build Maven'){
             steps{
-                git url:'https://github.com/manjugdr/cicd-with-K8S/', branch: "master"
+                git url:'https://github.com/LOKESH-creator660/cicd-with-K8S/', branch: "master"
                sh 'mvn clean install'
             }
         }
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t manjugdr/endtoendproject:v1 .'
+                    sh 'docker build -t lokil5762049/endtoendproject:v1 .'
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh 'docker push manjugdr/endtoendproject:v1'
+                    sh 'docker push lokil5762049/endtoendproject:v1'
                 }
             }
         }
