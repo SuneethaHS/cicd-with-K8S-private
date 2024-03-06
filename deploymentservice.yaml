@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spring-boot-k8s-loki
-          image: lokil5762049/pphproject:v2 # Image that will be used to containers in the cluster
+          image: lokil5762049/pphproject:v3 # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
