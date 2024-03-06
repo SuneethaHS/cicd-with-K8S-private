@@ -14,7 +14,7 @@ pipeline {
             steps{
                 script{ 
                     sh '/var/lib/jenkins/ cicd-with-K8S'
-                    sh 'docker build -t lokil5762049/endtoendproject:v1 .'
+                    sh 'docker build -t lokil5762049/endtoendproject:v1.'
                 }
             }
         }
