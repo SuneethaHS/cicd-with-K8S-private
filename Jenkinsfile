@@ -13,7 +13,7 @@ pipeline {
         stage('Build docker image'){
             steps{
                 script{ 
-                    sh 'docker build -t lokil5762049/endtoendproject:v1.'
+                    sh 'docker build -t lokil5762049/endtoendproject:v1 .'
                 }
             }
         }
