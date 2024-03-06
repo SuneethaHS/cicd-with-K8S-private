@@ -12,7 +12,8 @@ pipeline {
         }
         stage('Build docker image'){
             steps{
-                script{
+                script{ 
+                    sh '/var/lib/jenkins/ cicd-with-K8S'
                     sh 'docker build -t lokil5762049/endtoendproject:v1 .'
                 }
             }
