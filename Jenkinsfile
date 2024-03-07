@@ -10,18 +10,7 @@ pipeline {
                sh 'mvn clean install'
             }
         }
-
-       stage('Static Code Analysis') {
-        environment {
-        SONAR_URL = "http://172.31.26.87:9000"
-      }
-      steps {
-        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
-          sh 'cd/var/lib/jenkins/workspace/k8s-project/pom.xml && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
-        }
-      }
-    }
-        stage('Build docker image'){
+          stage('Build docker image'){
             steps{
                 script{ 
                     sh 'docker build -t lokil5762049/pphproject:v3 .'
