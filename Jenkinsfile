@@ -10,7 +10,12 @@ pipeline {
                sh 'mvn clean install'
             }
         }
-         stage('Static Code Analysis') {
+        stage('upload the artifact'){
+            steps{
+                nexusArtifactUploader artifacts: [[artifactId: 'devops-integration', classifier: '', file: 'target/devops-integration.jar', type: 'jar']], credentialsId: 'Nexus-credential', groupId: 'com.truelearning', nexusUrl: '54.82.106.42:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://54.82.106.42:8081/repository/endproject/', version: '0.0.1-SNAPSHOT'
+            }
+        }    
+        stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://172.31.92.131:9000"
       }
