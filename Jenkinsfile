@@ -12,7 +12,7 @@ pipeline {
         }
         stage('upload the artifact'){
             steps{
-                nexusArtifactUploader artifacts: [[artifactId: 'devops-integration', classifier: '', file: 'target/devops-integration.jar', type: 'jar']], credentialsId: 'Nexus-credential', groupId: 'com.truelearning', nexusUrl: '54.82.106.42:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://54.82.106.42:8081/repository/endproject/', version: '0.0.1-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'devops-integration', classifier: '', file: 'target/devops-integration.jar', type: 'jar']], credentialsId: 'Nexus-credential', groupId: 'com.truelearning', nexusUrl: '54.82.106.42:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'endproject/', version: '0.0.1-SNAPSHOT'
             }
         }    
         stage('Static Code Analysis') {
