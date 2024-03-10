@@ -28,7 +28,7 @@ pipeline {
       stage('Build docker image'){
             steps{
                 script{ 
-                    sh 'docker build -t lokil5762049/pphproject:v3 .'
+                    sh 'docker build -t lokil5762049/pphproject:v4 .'
                 }
             }
         }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd-loki', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh 'docker push lokil5762049/pphproject:v3'
+                    sh 'docker push lokil5762049/pphproject:v4'
                 }
             }
         }
