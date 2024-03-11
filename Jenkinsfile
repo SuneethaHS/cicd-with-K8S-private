@@ -28,6 +28,8 @@ pipeline {
       stage('Build docker image'){
             steps{
                 script{ 
+                    sh 'ssh ubuntu@172.31.32.105'
+                    sh 'scp /var/lib/jenkins/workspace/k8s-project/ ubuntu@172.31.32.105:/home/ubuntu'
                     sh 'docker build -t lokil5762049/pphproject:v4 .'
                 }
             }
@@ -43,6 +45,7 @@ pipeline {
            stage('Deploying App to Kubernetes') {
       steps {
         script {
+            sh 'ssh ubuntu@172.31.90.205'
           kubernetesDeploy(configs: "deploymentservice.yaml", kubeconfigId: "kubernetes-loki")               
                 }
             }
