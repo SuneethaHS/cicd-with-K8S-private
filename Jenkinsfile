@@ -10,6 +10,7 @@ pipeline {
                sh 'mvn clean install'
             }
         }
+    }
         stage('upload the artifact'){
             steps{
                 nexusArtifactUploader artifacts: [[artifactId: 'devops-integration', classifier: '', file: 'target/devops-integration.jar', type: 'jar']], credentialsId: 'Nexus-credential', groupId: 'com.truelearning', nexusUrl: '172.31.86.15:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'endproject/', version: '0.0.1-SNAPSHOT'
@@ -35,6 +36,7 @@ pipeline {
                 }
             }
         }
+      }
           stage('Docker login') {
             steps {
                 sshagent(['sshkeypair']) {
@@ -45,6 +47,7 @@ pipeline {
                 }
             }
         }
+          }
            stage('Deploying App to Kubernetes') {
       steps {
         script {
