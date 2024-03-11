@@ -16,7 +16,7 @@ spec:
         - name: spring-boot-k8s-loki3
           image: lokil5762049/pphproject:v4 # Image that will be used to containers in the cluster
           imagePullSecrete:
-          -  name: regcred
+          -  name: secret
           
 
 
