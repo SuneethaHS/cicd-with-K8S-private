@@ -6,7 +6,7 @@ pipeline {
     stages{
         stage('Build Maven'){
             steps{
-               git url:'https://github.com/LOKESH-creator660/cicd-with-K8S/', branch: "master"
+               git url:'https://github.com/SuneethaHS/cicd-with-K8S-private/', branch: "master"
                sh 'mvn clean install'
             }
         }
@@ -19,13 +19,13 @@ pipeline {
           stage('Build docker image'){
             steps{
                 script{
-                   sh 'docker build -t lokil5762049/pphproject:v4 .'
+                   sh 'docker build -t suneethahs/private:v1 .'
                 }
           }
         }
         stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://172.31.95.62:9000"
+        SONAR_URL = "http://13.233.166.222:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -37,7 +37,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd-loki', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
-                    sh 'docker push lokil5762049/pphproject:v4'
+                    sh 'docker push suneethahs/private:v1'
                 }
             }
         }
