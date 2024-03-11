@@ -13,7 +13,7 @@ spec:
         app: spring-boot-k8s-suni
     spec:
       containers:
-        - name: spring-boot-k8s-loki3
+        - name: spring-boot-k8s-suni
           image: suneethahs/private:v1 # Image that will be used to containers in the cluster
           imagePullSecrete:
           -  name: secret
