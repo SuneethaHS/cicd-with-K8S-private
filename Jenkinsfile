@@ -18,15 +18,11 @@ pipeline {
         }
           stage('Build docker image'){
             steps{
-                    script{
-                       sshagent(['sshkeypair']) {
-                       sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128"
-                       sh 'scp -i april-test.pem -r /var/lib/jenkins/workspace/k8s-project/ ubuntu@172.31.87.128:/home/ubuntu/k8s-project'
-                       sh 'docker build -t ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128:/k8s-project lokil5762049/pphproject:v4 .'
+                script{
+                       sh 'docker build -t lokil5762049/pphproject:v4 .'
                 }
             }
         }
-         }
         stage('Static Code Analysis') {
       environment {
         SONAR_URL = "http://172.31.95.62:9000"
@@ -39,25 +35,17 @@ pipeline {
     }
         stage('Docker login') {
             steps {
-                sshagent(['sshkeypair']) {
-                sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128"
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd-loki', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
                     sh 'docker push lokil5762049/pphproject:v4'
                 }
             }
         }
-          }
        stage('Deploying App to Kubernetes') {
       steps {
         script {
-            sshagent(['sshkeypair']) {
-                       sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.83.200"
-                sh 'scp -i april-test.pem  /var/lib/jenkins/workspace/k8s-project/deploymentservice.yaml  ubuntu@172.31.83.200:/home/ubuntu/'
-          kubernetesDeploy(configs: "deploymentservice.yaml", kubeconfigId: "kubernetes-loki")               
+             kubernetesDeploy(configs: "deploymentservice.yaml", kubeconfigId: "kubernetes-loki")               
                 }
             }
         }
     }
-}
-}
