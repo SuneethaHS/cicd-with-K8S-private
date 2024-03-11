@@ -12,12 +12,12 @@ pipeline {
         }
         stage('upload the artifact'){
             steps{
-                nexusArtifactUploader artifacts: [[artifactId: 'devops-integration', classifier: '', file: 'target/devops-integration.jar', type: 'jar']], credentialsId: 'Nexus-credential', groupId: 'com.truelearning', nexusUrl: '172.31.31.189:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'endproject/', version: '0.0.1-SNAPSHOT'
+                nexusArtifactUploader artifacts: [[artifactId: 'devops-integration', classifier: '', file: 'target/devops-integration.jar', type: 'jar']], credentialsId: 'Nexus-credential', groupId: 'com.truelearning', nexusUrl: '172.31.86.15:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'endproject/', version: '0.0.1-SNAPSHOT'
             }
         }    
         stage('Static Code Analysis') {
       environment {
-        SONAR_URL = "http://172.31.92.131:9000"
+        SONAR_URL = "http://172.31.95.62:9000"
       }
       steps {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
@@ -28,14 +28,17 @@ pipeline {
       stage('Build docker image'){
             steps{
                 script{ 
-                    sh 'ssh ubuntu@172.31.32.105'
-                    sh 'scp /var/lib/jenkins/workspace/k8s-project/ ubuntu@172.31.32.105:/home/ubuntu'
+                    sshagent(['sshkeypair']) {
+                       sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128"
+                       sh 'scp -i april-test.pem -r /var/lib/jenkins/workspace/tes-project-k8s/ ubuntu@172.31.87.128:/home/ubuntu/tes-project-k8s'
                     sh 'docker build -t lokil5762049/pphproject:v4 .'
                 }
             }
         }
           stage('Docker login') {
             steps {
+                sshagent(['sshkeypair']) {
+                       sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128"
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd-loki', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
                     sh 'docker push lokil5762049/pphproject:v4'
@@ -45,7 +48,9 @@ pipeline {
            stage('Deploying App to Kubernetes') {
       steps {
         script {
-            sh 'ssh ubuntu@172.31.90.205'
+            sshagent(['sshkeypair']) {
+                       sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.83.200"
+                       sh 'scp -i april-test.pem -r /var/lib/jenkins/workspace/tes-project-k8s/ ubuntu@172.31.83.200:/home/ubuntu/tes-project-k8s'
           kubernetesDeploy(configs: "deploymentservice.yaml", kubeconfigId: "kubernetes-loki")               
                 }
             }
