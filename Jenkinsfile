@@ -22,7 +22,7 @@ pipeline {
                        sshagent(['sshkeypair']) {
                        sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128"
                        sh 'scp -i april-test.pem -r /var/lib/jenkins/workspace/k8s-project/ ubuntu@172.31.87.128:/home/ubuntu/k8s-project'
-                       sh 'docker build -t lokil5762049/pphproject:v4 .'
+                       sh 'docker build -t ssh -o StrictHostKeyChecking=no ubuntu@172.31.87.128:/k8s-project lokil5762049/pphproject:v4 .'
                 }
             }
         }
