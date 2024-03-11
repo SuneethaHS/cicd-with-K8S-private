@@ -19,9 +19,11 @@ pipeline {
           stage('Build docker image'){
             steps{
                 script{
-                       sh 'docker build -t lokil5762049/pphproject:v4 .'
+                    ssh userRemoteMachine: 'ubuntu', 
+                        remote: '172.31.87.128', 
+                        command: 'cd /k8s-project/Dockerfile && docker build -t lokil5762049/pphproject:v4 .'
                 }
-            }
+          }
         }
         stage('Static Code Analysis') {
       environment {
