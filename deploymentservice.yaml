@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment # Kubernetes resource kind we are creating
 metadata:
-  name: spring-boot-k8s-deployment-loki3
+  name: spring-boot-k8s-deployment-suni
 spec:
   selector:
     matchLabels:
-      app: spring-boot-k8s-loki3
+      app: spring-boot-k8s-suni
   replicas: 2 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
-        app: spring-boot-k8s-loki3
+        app: spring-boot-k8s-suni
     spec:
       containers:
         - name: spring-boot-k8s-loki3
-          image: lokil5762049/pphproject:v4 # Image that will be used to containers in the cluster
+          image: suneethahs/private:v1 # Image that will be used to containers in the cluster
           imagePullSecrete:
           -  name: secret
           
