@@ -47,10 +47,10 @@ pipeline {
                 }
             }
         }
-          }
-           stage('Deploying App to Kubernetes') {
-      steps {
-        script {
+    }
+      stage('Deploying App to Kubernetes') {
+          steps {
+           script {
             sshagent(['sshkeypair']) {
                        sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.83.200"
                        sh 'scp -i april-test.pem -r /var/lib/jenkins/workspace/tes-project-k8s/ ubuntu@172.31.83.200:/home/ubuntu/tes-project-k8s'
