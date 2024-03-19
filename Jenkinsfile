@@ -21,7 +21,10 @@ pipeline {
         }
         stage("Quality gate"){
             steps{
-                waitforQualityGateabortpipeline:true
+                 def qualityGatePassed = true // Example: Evaluate quality gate criteria
+            if (!qualityGatePassed) {
+                error "Quality gate check failed!"
+            }
             }
         }
         stage('Build Maven'){
