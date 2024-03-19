@@ -21,12 +21,9 @@ pipeline {
         }
         stage("Quality gate"){
             steps{
-              qualityGatePassed = true // Example: Evaluate quality gate criteria
-            if (!qualityGatePassed) {
-                error "Quality gate check failed!"
+              waitForQualityGate abortPipeline: true
             }
             }
-        }
         stage('Build Maven'){
             steps{
                sh 'mvn clean install'
