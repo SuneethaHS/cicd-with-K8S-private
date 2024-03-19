@@ -21,7 +21,7 @@ pipeline {
         }
         stage("Quality gate"){
             steps{
-                 def qualityGatePassed = true // Example: Evaluate quality gate criteria
+              qualityGatePassed = true // Example: Evaluate quality gate criteria
             if (!qualityGatePassed) {
                 error "Quality gate check failed!"
             }
