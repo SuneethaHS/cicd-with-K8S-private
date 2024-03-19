@@ -17,6 +17,8 @@ pipeline {
         withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
           sh 'cd /var/lib/jenkins/workspace/k8s-project && mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
         }
+      }
+        }
         stage('Build Maven'){
             steps{
                sh 'mvn clean install'
@@ -30,21 +32,18 @@ pipeline {
           stage('Build docker image'){
             steps{
                 script{
-                   sh 'docker build -t suneethahs/private:v1 .'
+                   sh 'docker build -t suneethahs/private:v2 .'
                 }
           }
         }
-        
-      }
-    }
         stage('Docker login') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
                     sh "echo $PASS | docker login -u $USER --password-stdin"
                     sh 'docker push suneethahs/private:v1'
-                }
             }
         }
+        }    
        stage('Deploying App to Kubernetes') {
       steps {
         script {
