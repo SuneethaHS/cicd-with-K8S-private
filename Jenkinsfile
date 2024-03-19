@@ -19,6 +19,11 @@ pipeline {
         }
       }
         }
+        stage("Quality gate"){
+            steps{
+                waitforQualityGateabortpipeline:true
+            }
+        }
         stage('Build Maven'){
             steps{
                sh 'mvn clean install'
